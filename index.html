@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autoprijevoznik Grbac Vigor | Pouzdani prijevoz</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Barlow+Condensed:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --deep: #111318;
+    --steel: #1c2130;
+    --accent: #e8a020;
+    --accent2: #ff6b1a;
+    --white: #f5f0e8;
+    --muted: #8a8f9e;
+    --light-steel: #2d3548;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; opacity: 0.4;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: linear-gradient(180deg, rgba(10,10,10,0.98) 0%, transparent 100%);
+    border-bottom: 1px solid rgba(232,160,32,0.12);
+    backdrop-filter: blur(4px);
+  }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 1rem; text-decoration: none;
+  }
+  .nav-logo-icon {
+    width: 42px; height: 42px;
+    background: var(--accent);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem; color: var(--black);
+  }
+  .nav-logo-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem; letter-spacing: 0.08em;
+    color: var(--white);
+    line-height: 1.1;
+  }
+  .nav-logo-text span { color: var(--accent); }
+
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem; font-weight: 700; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted); text-decoration: none;
+    transition: color 0.25s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+    height: 1px; background: var(--accent);
+    transform: scaleX(0); transition: transform 0.25s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  .nav-cta {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem; font-weight: 700; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--black);
+    background: var(--accent);
+    border: none; padding: 0.65rem 1.8rem;
+    cursor: pointer; text-decoration: none;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: background 0.25s, transform 0.2s;
+  }
+  .nav-cta:hover { background: var(--accent2); transform: translateY(-1px); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    position: relative; overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 50%, rgba(232,160,32,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 80% at 20% 30%, rgba(255,107,26,0.05) 0%, transparent 50%),
+      linear-gradient(135deg, #0a0a0a 0%, #111318 50%, #0d1018 100%);
+  }
+
+  /* Road lines decoration */
+  .hero-road {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 6px;
+    background: repeating-linear-gradient(90deg,
+      var(--accent) 0px, var(--accent) 60px,
+      transparent 60px, transparent 100px
+    );
+    animation: roadMove 2s linear infinite;
+  }
+  @keyframes roadMove {
+    from { background-position: 0 0; }
+    to { background-position: 100px 0; }
+  }
+
+  .hero-left {
+    position: relative; z-index: 2;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 10rem 4rem 6rem 4rem;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--accent);
+    border: 1px solid rgba(232,160,32,0.3);
+    padding: 0.4rem 1rem; width: fit-content;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-badge::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--accent); border-radius: 50%;
+    animation: pulse 2s ease infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  .hero-h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 7vw, 7.5rem);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+  .hero-h1 .line2 { color: var(--accent); display: block; }
+  .hero-h1 .line3 {
+    display: block;
+    -webkit-text-stroke: 1px rgba(245,240,232,0.3);
+    color: transparent;
+  }
+
+  .hero-divider {
+    width: 80px; height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    margin: 2.5rem 0;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .hero-desc {
+    font-size: 1.1rem; line-height: 1.7;
+    color: rgba(245,240,232,0.65); max-width: 460px;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 3rem;
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem; line-height: 1; color: var(--accent);
+  }
+  .stat-label {
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted); margin-top: 0.2rem;
+  }
+
+  .hero-btns {
+    display: flex; gap: 1rem; margin-top: 3rem;
+    animation: fadeUp 0.8s 0.5s ease both;
+  }
+  .btn-primary {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.9rem; font-weight: 700; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--black);
+    background: var(--accent); border: none;
+    padding: 1rem 2.5rem; cursor: pointer;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    transition: background 0.25s, transform 0.2s; text-decoration: none;
+  }
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); }
+
+  .btn-secondary {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.9rem; font-weight: 700; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--white);
+    background: transparent;
+    border: 1px solid rgba(245,240,232,0.25);
+    padding: 1rem 2.5rem; cursor: pointer;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    transition: border-color 0.25s, color 0.25s, transform 0.2s; text-decoration: none;
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+  /* ─── HERO RIGHT - truck illustration ─── */
+  .hero-right {
+    position: relative; z-index: 2;
+    display: flex; align-items: center; justify-content: center;
+    padding: 8rem 3rem 6rem;
+    animation: fadeIn 1.2s 0.3s ease both;
+  }
+
+  .truck-scene {
+    position: relative; width: 100%; max-width: 580px;
+  }
+
+  .truck-glow {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px; height: 300px;
+    background: radial-gradient(ellipse, rgba(232,160,32,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .truck-svg {
+    width: 100%; filter: drop-shadow(0 20px 60px rgba(232,160,32,0.2));
+    animation: truckFloat 4s ease-in-out infinite;
+  }
+  @keyframes truckFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+  }
+
+  /* Speed lines */
+  .speed-lines {
+    position: absolute; left: -60px; top: 50%;
+    transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .speed-line {
+    height: 2px; background: linear-gradient(90deg, transparent, var(--accent));
+    animation: speedLine 1.5s ease-in-out infinite;
+  }
+  .speed-line:nth-child(1) { width: 80px; animation-delay: 0s; }
+  .speed-line:nth-child(2) { width: 50px; animation-delay: 0.2s; }
+  .speed-line:nth-child(3) { width: 65px; animation-delay: 0.4s; }
+  .speed-line:nth-child(4) { width: 40px; animation-delay: 0.1s; }
+  @keyframes speedLine {
+    0% { opacity: 0; transform: translateX(20px); }
+    50% { opacity: 1; }
+    100% { opacity: 0; transform: translateX(-20px); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* ─── SERVICES ─── */
+  .section {
+    padding: 8rem 4rem;
+    position: relative;
+  }
+
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .section-label::before {
+    content: ''; display: block; width: 30px; height: 2px;
+    background: var(--accent);
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 5vw, 5rem);
+    line-height: 0.95; letter-spacing: 0.02em;
+    max-width: 600px;
+  }
+  .section-title span { color: var(--accent); }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px;
+    margin-top: 5rem;
+    background: rgba(232,160,32,0.1);
+  }
+
+  .service-card {
+    background: var(--deep);
+    padding: 3rem 2.5rem;
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+    cursor: default;
+  }
+  .service-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 3px; height: 0;
+    background: linear-gradient(180deg, var(--accent), var(--accent2));
+    transition: height 0.4s ease;
+  }
+  .service-card:hover { background: var(--steel); }
+  .service-card:hover::before { height: 100%; }
+
+  .service-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem; line-height: 1;
+    color: rgba(232,160,32,0.12);
+    position: absolute; top: 1.5rem; right: 2rem;
+    transition: color 0.3s;
+  }
+  .service-card:hover .service-num { color: rgba(232,160,32,0.25); }
+
+  .service-icon {
+    width: 52px; height: 52px;
+    background: rgba(232,160,32,0.1);
+    border: 1px solid rgba(232,160,32,0.2);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 2rem;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .service-card:hover .service-icon {
+    background: rgba(232,160,32,0.2);
+    border-color: rgba(232,160,32,0.4);
+  }
+  .service-icon svg { width: 24px; height: 24px; color: var(--accent); }
+
+  .service-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.4rem; font-weight: 700; letter-spacing: 0.05em;
+    text-transform: uppercase; margin-bottom: 1rem;
+  }
+
+  .service-desc {
+    font-size: 0.9rem; line-height: 1.7;
+    color: rgba(245,240,232,0.55);
+  }
+
+  /* ─── WHY US ─── */
+  .why-section {
+    background: var(--deep);
+    padding: 8rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .why-section::before {
+    content: '';
+    position: absolute; top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(232,160,32,0.05) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .why-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8rem; align-items: center;
+    margin-top: 5rem;
+  }
+
+  .why-list { display: flex; flex-direction: column; gap: 2rem; }
+
+  .why-item {
+    display: flex; gap: 1.5rem; align-items: flex-start;
+    padding: 1.5rem;
+    border: 1px solid rgba(245,240,232,0.06);
+    transition: border-color 0.3s, background 0.3s;
+    cursor: default;
+  }
+  .why-item:hover {
+    border-color: rgba(232,160,32,0.25);
+    background: rgba(232,160,32,0.03);
+  }
+
+  .why-icon-wrap {
+    flex-shrink: 0; width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .why-icon-wrap svg { width: 18px; height: 18px; color: var(--black); }
+
+  .why-text h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 0.4rem;
+  }
+  .why-text p {
+    font-size: 0.88rem; line-height: 1.6;
+    color: rgba(245,240,232,0.55);
+  }
+
+  .why-visual {
+    position: relative;
+  }
+  .why-big-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12rem; line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(232,160,32,0.15);
+    position: absolute; top: -2rem; right: -2rem;
+    pointer-events: none;
+  }
+  .why-card-stack { position: relative; }
+
+  .why-main-card {
+    background: var(--steel);
+    border: 1px solid rgba(232,160,32,0.15);
+    padding: 3rem;
+    position: relative; z-index: 2;
+  }
+  .why-main-card::after {
+    content: '';
+    position: absolute; bottom: -12px; right: -12px;
+    inset: 12px -12px -12px 12px;
+    background: rgba(232,160,32,0.08);
+    border: 1px solid rgba(232,160,32,0.1);
+    z-index: -1;
+  }
+
+  .why-card-icon {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem; line-height: 1; color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .why-card-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.6rem; font-weight: 900; letter-spacing: 0.05em;
+    text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .why-card-desc {
+    font-size: 0.9rem; line-height: 1.7;
+    color: rgba(245,240,232,0.6);
+  }
+
+  /* ─── FLEET ─── */
+  .fleet-section { padding: 8rem 4rem; background: var(--black); }
+
+  .fleet-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    margin-top: 5rem; background: rgba(245,240,232,0.06);
+  }
+
+  .fleet-card {
+    background: var(--black);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    transition: background 0.3s;
+    cursor: default;
+  }
+  .fleet-card:hover { background: var(--deep); }
+
+  .fleet-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem; line-height: 1; color: var(--accent);
+  }
+  .fleet-unit {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+    margin-top: 0.5rem;
+  }
+  .fleet-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; margin-top: 1rem; margin-bottom: 0.5rem;
+  }
+  .fleet-desc {
+    font-size: 0.8rem; color: rgba(245,240,232,0.45); line-height: 1.5;
+  }
+
+  /* ─── MARQUEE ─── */
+  .marquee-wrap {
+    background: var(--accent);
+    overflow: hidden; padding: 1rem 0;
+    position: relative;
+  }
+  .marquee-track {
+    display: flex; width: max-content;
+    animation: marquee 20s linear infinite;
+  }
+  .marquee-item {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem; letter-spacing: 0.1em;
+    color: var(--black); padding: 0 2rem;
+    display: flex; align-items: center; gap: 2rem;
+    white-space: nowrap;
+  }
+  .marquee-sep {
+    width: 8px; height: 8px;
+    background: rgba(10,10,10,0.3);
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ─── CONTACT ─── */
+  .contact-section {
+    padding: 8rem 4rem;
+    background: var(--deep);
+    position: relative; overflow: hidden;
+  }
+  .contact-section::before {
+    content: 'KONTAKT';
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20rem; line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(245,240,232,0.03);
+    position: absolute; bottom: -3rem; left: -1rem;
+    pointer-events: none; white-space: nowrap;
+  }
+
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6rem;
+    margin-top: 5rem; position: relative; z-index: 2;
+  }
+
+  .contact-info { display: flex; flex-direction: column; gap: 2rem; }
+
+  .contact-item {
+    display: flex; gap: 1.5rem; align-items: flex-start;
+  }
+  .contact-icon-wrap {
+    width: 48px; height: 48px; flex-shrink: 0;
+    background: rgba(232,160,32,0.1);
+    border: 1px solid rgba(232,160,32,0.2);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .contact-icon-wrap svg { width: 20px; height: 20px; color: var(--accent); }
+  .contact-item-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 0.3rem;
+  }
+  .contact-item-value {
+    font-size: 1rem; color: var(--white);
+    line-height: 1.5;
+  }
+  .contact-item-value a { color: var(--accent); text-decoration: none; }
+  .contact-item-value a:hover { text-decoration: underline; }
+
+  /* Form */
+  .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+
+  .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+  .form-group label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    background: rgba(245,240,232,0.04);
+    border: 1px solid rgba(245,240,232,0.1);
+    color: var(--white);
+    padding: 0.9rem 1.2rem;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.25s;
+    appearance: none;
+  }
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: rgba(245,240,232,0.25); }
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus { border-color: var(--accent); }
+  .form-group textarea { resize: vertical; min-height: 120px; }
+  .form-group select option { background: var(--steel); }
+
+  .form-submit {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem; font-weight: 700; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--black);
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border: none; padding: 1.1rem 3rem;
+    cursor: pointer; width: 100%;
+    clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+    transition: opacity 0.25s, transform 0.2s;
+    margin-top: 0.5rem;
+  }
+  .form-submit:hover { opacity: 0.9; transform: translateY(-2px); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--black);
+    border-top: 1px solid rgba(232,160,32,0.12);
+    padding: 3rem 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 2rem;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem; letter-spacing: 0.1em;
+  }
+  .footer-logo span { color: var(--accent); }
+
+  .footer-copy {
+    font-size: 0.8rem; color: var(--muted);
+    text-align: center;
+  }
+
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a {
+    font-size: 0.8rem; color: var(--muted); text-decoration: none;
+    transition: color 0.25s;
+  }
+  .footer-links a:hover { color: var(--accent); }
+
+  /* ─── SCROLL ANIMATIONS ─── */
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* ─── MOBILE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left { padding: 9rem 1.5rem 4rem; }
+    .section, .why-section, .fleet-section, .contact-section { padding: 5rem 1.5rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .why-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .fleet-grid { grid-template-columns: 1fr 1fr; }
+    .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .form-row { grid-template-columns: 1fr; }
+    footer { flex-direction: column; text-align: center; padding: 2rem 1.5rem; }
+    .footer-links { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">GV</div>
+    <div class="nav-logo-text">Grbac <span>Vigor</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#usluge">Usluge</a></li>
+    <li><a href="#zasto-mi">Zašto mi</a></li>
+    <li><a href="#vozni-park">Vozni park</a></li>
+    <li><a href="#kontakt">Kontakt</a></li>
+  </ul>
+  <a href="#kontakt" class="nav-cta">Zatražite ponudu</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-road"></div>
+
+  <div class="hero-left">
+    <div class="hero-badge">Pouzdani prijevoz od 1998.</div>
+    <h1 class="hero-h1">
+      SVAKI
+      <span class="line2">TERET.</span>
+      <span class="line3">SVUDA.</span>
+    </h1>
+    <div class="hero-divider"></div>
+    <p class="hero-desc">
+      Obiteljska tvrtka oca i sina — Autoprijevoznik Grbac Vigor vaš je pouzdani partner za cestovni prijevoz tereta širom Hrvatske. Osobni pristup, fleksibilnost i profesionalnost na svakom kilometru.
+    </p>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">25+</div>
+        <div class="stat-label">Godina iskustva</div>
+      </div>
+      <div>
+        <div class="stat-num">3</div>
+        <div class="stat-label">Vozila u floti</div>
+      </div>
+      <div>
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Obiteljska firma</div>
+      </div>
+    </div>
+    <div class="hero-btns">
+      <a href="#kontakt" class="btn-primary">Kontaktirajte nas</a>
+      <a href="#usluge" class="btn-secondary">Naše usluge</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="truck-scene">
+      <div class="truck-glow"></div>
+      <div class="speed-lines">
+        <div class="speed-line"></div>
+        <div class="speed-line"></div>
+        <div class="speed-line"></div>
+        <div class="speed-line"></div>
+      </div>
+      <!-- Truck SVG illustration -->
+      <svg class="truck-svg" viewBox="0 0 560 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Trailer body -->
+        <rect x="30" y="60" width="340" height="155" rx="4" fill="#1c2130" stroke="#e8a020" stroke-width="1.5"/>
+        <rect x="30" y="60" width="340" height="20" rx="4" fill="#e8a020" opacity="0.8"/>
+        <!-- Company name on trailer -->
+        <text x="200" y="155" font-family="'Bebas Neue', sans-serif" font-size="28" fill="#e8a020" text-anchor="middle" letter-spacing="3" opacity="0.9">GRBAC VIGOR</text>
+        <text x="200" y="178" font-family="Arial" font-size="11" fill="rgba(245,240,232,0.4)" text-anchor="middle" letter-spacing="2">AUTOPRIJEVOZNIK</text>
+        <!-- Trailer details -->
+        <line x1="30" y1="120" x2="370" y2="120" stroke="rgba(232,160,32,0.15)" stroke-width="1"/>
+        <line x1="30" y1="160" x2="370" y2="160" stroke="rgba(232,160,32,0.08)" stroke-width="1"/>
+        <rect x="340" y="70" width="30" height="135" fill="#111318" stroke="#e8a020" stroke-width="1"/>
+        <!-- Trailer legs -->
+        <rect x="80" y="215" width="8" height="30" fill="#2d3548"/>
+        <rect x="120" y="215" width="8" height="30" fill="#2d3548"/>
+        <!-- Cab -->
+        <rect x="370" y="90" width="150" height="125" rx="6" fill="#1c2130" stroke="#e8a020" stroke-width="1.5"/>
+        <!-- Cab roof -->
+        <path d="M370 90 Q380 60 430 55 L500 65 L520 90 Z" fill="#111318" stroke="#e8a020" stroke-width="1.5"/>
+        <!-- Windshield -->
+        <path d="M390 92 Q398 70 430 64 L496 72 L510 92 Z" fill="#0d1018" stroke="rgba(232,160,32,0.4)" stroke-width="1"/>
+        <line x1="450" y1="62" x2="450" y2="92" stroke="rgba(232,160,32,0.3)" stroke-width="1"/>
+        <!-- Cab door -->
+        <rect x="380" y="110" width="60" height="80" rx="3" fill="#111318" stroke="rgba(232,160,32,0.2)" stroke-width="1"/>
+        <rect x="395" y="145" width="20" height="3" rx="1.5" fill="rgba(232,160,32,0.5)"/>
+        <!-- Side window -->
+        <rect x="385" y="115" width="50" height="35" rx="2" fill="#0d1018" stroke="rgba(232,160,32,0.3)" stroke-width="1"/>
+        <!-- Lights -->
+        <rect x="515" y="100" width="10" height="16" rx="2" fill="#e8a020"/>
+        <rect x="515" y="100" width="10" height="16" rx="2" fill="url(#lightGlow)"/>
+        <rect x="515" y="155" width="10" height="10" rx="2" fill="#ff4444" opacity="0.8"/>
+        <!-- Exhaust pipe -->
+        <rect x="505" y="58" width="8" height="35" rx="4" fill="#2d3548" stroke="#e8a020" stroke-width="1"/>
+        <!-- Smoke puffs -->
+        <circle cx="509" cy="50" r="6" fill="rgba(200,200,200,0.08)" opacity="0.6"/>
+        <circle cx="512" cy="40" r="8" fill="rgba(200,200,200,0.06)" opacity="0.4"/>
+        <circle cx="507" cy="30" r="5" fill="rgba(200,200,200,0.04)" opacity="0.3"/>
+        <!-- Fifth wheel connector -->
+        <rect x="358" y="210" width="20" height="8" rx="2" fill="#2d3548"/>
+        <!-- Chassis / frame -->
+        <rect x="30" y="218" width="490" height="12" rx="3" fill="#2d3548" stroke="rgba(232,160,32,0.2)" stroke-width="1"/>
+        <!-- Wheels -->
+        <!-- Rear trailer wheels -->
+        <circle cx="90" cy="240" r="28" fill="#111318" stroke="#e8a020" stroke-width="2"/>
+        <circle cx="90" cy="240" r="18" fill="#0a0a0a" stroke="rgba(232,160,32,0.3)" stroke-width="1"/>
+        <circle cx="90" cy="240" r="6" fill="#e8a020"/>
+        <circle cx="145" cy="240" r="28" fill="#111318" stroke="#e8a020" stroke-width="2"/>
+        <circle cx="145" cy="240" r="18" fill="#0a0a0a" stroke="rgba(232,160,32,0.3)" stroke-width="1"/>
+        <circle cx="145" cy="240" r="6" fill="#e8a020"/>
+        <!-- Drive axle wheels -->
+        <circle cx="390" cy="240" r="28" fill="#111318" stroke="#e8a020" stroke-width="2"/>
+        <circle cx="390" cy="240" r="18" fill="#0a0a0a" stroke="rgba(232,160,32,0.3)" stroke-width="1"/>
+        <circle cx="390" cy="240" r="6" fill="#e8a020"/>
+        <circle cx="445" cy="240" r="28" fill="#111318" stroke="#e8a020" stroke-width="2"/>
+        <circle cx="445" cy="240" r="18" fill="#0a0a0a" stroke="rgba(232,160,32,0.3)" stroke-width="1"/>
+        <circle cx="445" cy="240" r="6" fill="#e8a020"/>
+        <!-- Steer axle wheel -->
+        <circle cx="498" cy="240" r="26" fill="#111318" stroke="#e8a020" stroke-width="2"/>
+        <circle cx="498" cy="240" r="17" fill="#0a0a0a" stroke="rgba(232,160,32,0.3)" stroke-width="1"/>
+        <circle cx="498" cy="240" r="5" fill="#e8a020"/>
+        <!-- Shadow -->
+        <ellipse cx="280" cy="272" rx="260" ry="8" fill="rgba(0,0,0,0.5)"/>
+        <defs>
+          <radialGradient id="lightGlow">
+            <stop offset="0%" stop-color="#ffe066" stop-opacity="1"/>
+            <stop offset="100%" stop-color="#e8a020" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">Cestovni prijevoz<div class="marquee-sep"></div></div>
+    <div class="marquee-item">Prijevoz kamionom<div class="marquee-sep"></div></div>
+    <div class="marquee-item">Prijevoz kombijem<div class="marquee-sep"></div></div>
+    <div class="marquee-item">FTL i LTL<div class="marquee-sep"></div></div>
+    <div class="marquee-item">Express dostava<div class="marquee-sep"></div></div>
+    <div class="marquee-item">Obiteljska firma · Kastav<div class="marquee-sep"></div></div>
+    <!-- Repeat -->
+    <div class="marquee-item">Cestovni prijevoz<div class="marquee-sep"></div></div>
+    <div class="marquee-item">Prijevoz kamionom<div class="marquee-sep"></div></div>
+    <div class="marquee-item">Prijevoz kombijem<div class="marquee-sep"></div></div>
+    <div class="marquee-item">FTL i LTL<div class="marquee-sep"></div></div>
+    <div class="marquee-item">Express dostava<div class="marquee-sep"></div></div>
+    <div class="marquee-item">Obiteljska firma · Kastav<div class="marquee-sep"></div></div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="section" id="usluge">
+  <div class="section-label">Naše usluge</div>
+  <h2 class="section-title reveal">Što <span>nudimo</span> vašem poslovanju</h2>
+
+  <div class="services-grid">
+    <div class="service-card reveal reveal-delay-1">
+      <span class="service-num">01</span>
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8z"/>
+          <circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+        </svg>
+      </div>
+      <h3 class="service-title">Nacionalni prijevoz</h3>
+      <p class="service-desc">Pouzdani prijevoz tereta na svim relacijama unutar Hrvatske. Brza i sigurna dostava uz praćenje pošiljke u realnom vremenu.</p>
+    </div>
+
+    <div class="service-card reveal reveal-delay-2">
+      <span class="service-num">02</span>
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="2" y1="12" x2="22" y2="12"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+      </div>
+      <h3 class="service-title">Međunarodni transport</h3>
+      <p class="service-desc">Prijevoz tereta širom Europe uz kompletnu dokumentaciju, carinsku podršku i iskusne vozače koji poznaju sve europske rute.</p>
+    </div>
+
+    <div class="service-card reveal reveal-delay-3">
+      <span class="service-num">03</span>
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+        </svg>
+      </div>
+      <h3 class="service-title">Prijevoz teških tereta</h3>
+      <p class="service-desc">Specijalizirani prijevoz izvanrednih tereta i dimenzija. Organizacija pratnje i sva potrebna dopuštenja za vanredne transporte.</p>
+    </div>
+
+    <div class="service-card reveal reveal-delay-1">
+      <span class="service-num">04</span>
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+        </svg>
+      </div>
+      <h3 class="service-title">Express dostava</h3>
+      <p class="service-desc">Hitni transporti i express dostave za pošiljke kojima je brzina prioritet. Garantirani rokovi isporuke i stalna komunikacija.</p>
+    </div>
+
+    <div class="service-card reveal reveal-delay-2">
+      <span class="service-num">05</span>
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+          <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+        </svg>
+      </div>
+      <h3 class="service-title">FTL i LTL transport</h3>
+      <p class="service-desc">Prijevoz cijelih kamionskih količina (FTL) ili djelomičnog utovara (LTL) uz optimizaciju troškova i iskorištenosti kapaciteta.</p>
+    </div>
+
+    <div class="service-card reveal reveal-delay-3">
+      <span class="service-num">06</span>
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      </div>
+      <h3 class="service-title">Osobni pristup</h3>
+      <p class="service-desc">Kao obiteljska tvrtka, svakom klijentu pristupamo individualno. Uvijek možete razgovarati direktno s vlasnikom — bez posrednika i birokracije.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why-section" id="zasto-mi">
+  <div class="section-label">Zašto Grbac Vigor</div>
+  <h2 class="section-title reveal">Vaš <span>pouzdani</span><br>partner na cesti</h2>
+
+  <div class="why-grid">
+    <div class="why-list">
+      <div class="why-item reveal">
+        <div class="why-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <div class="why-text">
+          <h3>Potpuno osigurani prijevoz</h3>
+          <p>Sav teret je pokriven sveobuhvatnim osiguranjem. Vaša roba je u sigurnim rukama od preuzimanja do isporuke.</p>
+        </div>
+      </div>
+
+      <div class="why-item reveal reveal-delay-1">
+        <div class="why-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <div class="why-text">
+          <h3>Točnost i pouzdanost</h3>
+          <p>Poštivanje rokova naš je standard, ne iznimka. Više od 97% dostava izvršeno je u dogovorenom terminu.</p>
+        </div>
+      </div>
+
+      <div class="why-item reveal reveal-delay-2">
+        <div class="why-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <div class="why-text">
+          <h3>Iskusni vozači</h3>
+          <p>Naš tim čine profesionalni vozači s višegodišnjim iskustvom na europskim cestama i svim potrebnim certifikatima.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="why-visual reveal">
+      <div class="why-big-number">25</div>
+      <div class="why-card-stack">
+        <div class="why-main-card">
+          <div class="why-card-icon">★</div>
+          <h3 class="why-card-title">Obiteljska firma oca i sina</h3>
+          <p class="why-card-desc">
+            Autoprijevoznik Grbac Vigor obiteljska je tvrtka koju zajedno vode otac Vigor i sin Dorjan Grbac. S više od 25 godina iskustva na cestama, izgradili smo reputaciju temelje na povjerenju, poštenju i ispunjenim obećanjima.
+            <br><br>
+            Nudimo ono što velika tvrtka ne može — direktan kontakt s vlasnikom, fleksibilne dogovore i prijevoz prilagođen vašim potrebama. Kod nas ste uvijek više od broja narudžbe.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLEET -->
+<section class="fleet-section" id="vozni-park">
+  <div class="section-label">Vozni park</div>
+  <h2 class="section-title reveal">Naša <span>vozila</span> za vaš teret</h2>
+
+  <div class="fleet-grid" style="grid-template-columns: repeat(3, 1fr);">
+    <div class="fleet-card reveal">
+      <div class="fleet-num">~20T</div>
+      <div class="fleet-unit">nosivost</div>
+      <div class="fleet-name">Scania kamion</div>
+      <div class="fleet-desc">Teretni kamion za veće pošiljke i paleti — pouzdan na dugim relacijama</div>
+    </div>
+    <div class="fleet-card reveal reveal-delay-1">
+      <div class="fleet-num">~1T</div>
+      <div class="fleet-unit">nosivost po kombiju</div>
+      <div class="fleet-name">2× Renault kombi</div>
+      <div class="fleet-desc">Idealni za manje pošiljke, express dostave i prijevoz na kraćim relacijama</div>
+    </div>
+    <div class="fleet-card reveal reveal-delay-2">
+      <div class="fleet-num">3</div>
+      <div class="fleet-unit">vozila ukupno</div>
+      <div class="fleet-name">Fleksibilna flota</div>
+      <div class="fleet-desc">Prilagođavamo vozilo vrsti tereta — od malih paketa do velikih kamionskih količina</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="kontakt">
+  <div class="section-label">Kontakt</div>
+  <h2 class="section-title reveal">Pošaljite nam <span>upit</span></h2>
+
+  <div class="contact-grid">
+    <div class="contact-info">
+      <div class="contact-item reveal">
+        <div class="contact-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        <div>
+          <div class="contact-item-label">Adresa</div>
+          <div class="contact-item-value">Rubeši 68<br>51215 Kastav, Hrvatska</div>
+        </div>
+      </div>
+
+      <div class="contact-item reveal reveal-delay-1">
+        <div class="contact-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.56 3.44 2 2 0 0 1 3.53 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.08 6.08l.87-.87a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="contact-item-label">Dorjan Grbac</div>
+          <div class="contact-item-value">
+            <a href="tel:+385992311958">+385 99 231 1958</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-item reveal reveal-delay-2">
+        <div class="contact-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.56 3.44 2 2 0 0 1 3.53 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.08 6.08l.87-.87a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="contact-item-label">Vigor Grbac</div>
+          <div class="contact-item-value">
+            <a href="tel:+385982570066">+385 98 257 066</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-item reveal reveal-delay-2">
+        <div class="contact-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </div>
+        <div>
+          <div class="contact-item-label">E-mail</div>
+          <div class="contact-item-value">
+            <a href="mailto:dorjan.grbac@gmail.com">dorjan.grbac@gmail.com</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-item reveal reveal-delay-3">
+        <div class="contact-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <div>
+          <div class="contact-item-label">Dostupnost</div>
+          <div class="contact-item-value">Fleksibilno radno vrijeme<br>Javite se — uvijek ćemo se dogovoriti</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form reveal">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Ime i prezime</label>
+          <input type="text" placeholder="Vaše ime">
+        </div>
+        <div class="form-group">
+          <label>Tvrtka</label>
+          <input type="text" placeholder="Naziv tvrtke">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Telefon</label>
+          <input type="tel" placeholder="+385...">
+        </div>
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" placeholder="vasa@email.com">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Vrsta prijevoza</label>
+        <select>
+          <option value="">Odaberite uslugu...</option>
+          <option>Nacionalni prijevoz</option>
+          <option>Međunarodni transport</option>
+          <option>Prijevoz teških tereta</option>
+          <option>Express dostava</option>
+          <option>FTL transport</option>
+          <option>LTL transport</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Polazište</label>
+          <input type="text" placeholder="Grad / zemlja">
+        </div>
+        <div class="form-group">
+          <label>Odredište</label>
+          <input type="text" placeholder="Grad / zemlja">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Poruka / opis tereta</label>
+        <textarea placeholder="Opišite vrstu tereta, težinu, dimenzije i posebne zahtjeve..."></textarea>
+      </div>
+      <button class="form-submit" onclick="alert('Hvala! Javit ćemo vam se u najkraćem mogućem roku.')">
+        Pošalji upit →
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Grbac <span>Vigor</span> · Autoprijevoznik</div>
+  <div class="footer-copy">© 2025 Autoprijevoznik Grbac Vigor. Sva prava pridržana.</div>
+  <div class="footer-links">
+    <a href="#">Uvjeti poslovanja</a>
+    <a href="#">Privatnost</a>
+    <a href="#kontakt">Kontakt</a>
+  </div>
+</footer>
+
+<script>
+  // Intersection Observer for reveal animations
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+  reveals.forEach(el => observer.observe(el));
+
+  // Nav background on scroll
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 80) {
+      nav.style.background = 'rgba(10,10,10,0.97)';
+      nav.style.borderBottomColor = 'rgba(232,160,32,0.2)';
+    } else {
+      nav.style.background = 'linear-gradient(180deg, rgba(10,10,10,0.98) 0%, transparent 100%)';
+      nav.style.borderBottomColor = 'rgba(232,160,32,0.12)';
+    }
+  });
+</script>
+</body>
+</html>
